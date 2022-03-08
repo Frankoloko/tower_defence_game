@@ -55,16 +55,16 @@ public class Enemy : MonoBehaviour
             reachedEndOfPath = false;
         }
         
-        Debug.Log("currentWaypoint: " + (Vector2)path.vectorPath[currentWaypoint]);
-        Debug.Log("rb.position: " + rb.position);
+        // Debug.Log("currentWaypoint: " + (Vector2)path.vectorPath[currentWaypoint]);
+        // Debug.Log("rb.position: " + rb.position);
         Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
-        Debug.Log("direction: " + direction);
+        // Debug.Log("direction: " + direction);
         Vector2 newPosition = (rb.position + direction) * speed * Time.deltaTime;
-        // rb.position = newPosition;
+        rb.position = newPosition;
         rb.MovePosition(newPosition);
-        Debug.Log("currentPosition: " + rb.position);
-        Debug.Log("newPosition: " + newPosition);
-        Debug.Log("--------");
+        // Debug.Log("currentPosition: " + rb.position);
+        // Debug.Log("newPosition: " + newPosition);
+        // Debug.Log("--------");
 
         float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
 
