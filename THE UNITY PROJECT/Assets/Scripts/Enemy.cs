@@ -33,15 +33,7 @@ public class Enemy : MonoBehaviour
     {
         // Start a new path to the targetPosition, call the the OnPathComplete function
         // when the path has been calculated (which may take a few frames depending on the complexity)
-        seeker.StartPath(transform.position, target.position, OnPathComplete);
-
-
-        //////////////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////////////
-        // https://arongranberg.com/astar/documentation/dev_4_1_6_17dee0ac/graph-updates.php
-        //////////////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////////////
-        
+        seeker.StartPath(transform.position, target.position, OnPathComplete);        
     }
 
     void OnPathComplete(Path p)
@@ -74,8 +66,6 @@ public class Enemy : MonoBehaviour
         // Move the enemy towards the end point
         Vector2 currentPosition = new Vector2(transform.position.x, transform.position.y);
         transform.position = Vector2.MoveTowards(currentPosition, path.vectorPath[currentWaypoint], movementSpeed * Time.deltaTime);
-
-        // AstarPath.active.Scan(); // Don't do this, it will just hang the game
 
         // Calculate the distance to move over to the next way point
         float distance = Vector2.Distance(transform.position, path.vectorPath[currentWaypoint]);

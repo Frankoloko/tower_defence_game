@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pathfinding;
 
 public class GameState : MonoBehaviour
 {
@@ -46,15 +47,11 @@ public class GameState : MonoBehaviour
             newColor.a = 1;
             renderer.material.color = newColor;
 
-            // Recalculate graph for all enemies based on tower placed
-            // https://arongranberg.com/astar/documentation/4_0_8_e597295/graph-updates.php
-            // At the chatper Using Scripting
-            // using Pathfinding; //At top of script
-            // var guo = new GraphUpdateObject(myBounds);
-            // // Set some settings
-            // guo.updatePhysics = true;
-            // AstarPath.active.UpdateGraphs (guo);
-            // var guo = new GraphUpdateObject(GetComponent<Collider>().bounds); 
+            // Recalculate seeker graph based on tower placed
+            // https://arongranberg.com/astar/documentation/4_0_8_e597295/graph-updates.php at the chatper Using Scripting
+            var guo = new GraphUpdateObject(tempObject.GetComponent<BoxCollider2D>().bounds); 
+            guo.updatePhysics = true;
+            AstarPath.active.UpdateGraphs (guo);
         }
     }
 }
