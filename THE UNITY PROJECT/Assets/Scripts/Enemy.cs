@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
 
+////////////////////// IMPORTANT //////////////////////
+// Check for blocking placements when placing a tower
+// https://arongranberg.com/astar/documentation/4_0_8_e597295/graph-updates.php
+
 public class Enemy : MonoBehaviour
 {
 
@@ -71,11 +75,14 @@ public class Enemy : MonoBehaviour
         Vector2 currentPosition = new Vector2(transform.position.x, transform.position.y);
         transform.position = Vector2.MoveTowards(currentPosition, path.vectorPath[currentWaypoint], movementSpeed * Time.deltaTime);
 
+        // AstarPath.active.Scan(); // Don't do this, it will just hang the game
+
         // Calculate the distance to move over to the next way point
         float distance = Vector2.Distance(transform.position, path.vectorPath[currentWaypoint]);
         if (distance < nextWaypointDistance)
         {
             currentWaypoint++;
         }
+
     }
 }

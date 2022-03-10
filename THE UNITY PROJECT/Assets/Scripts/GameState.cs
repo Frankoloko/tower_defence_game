@@ -45,6 +45,16 @@ public class GameState : MonoBehaviour
             Debug.Log(newColor);
             newColor.a = 1;
             renderer.material.color = newColor;
+
+            // Recalculate graph for all enemies based on tower placed
+            // https://arongranberg.com/astar/documentation/4_0_8_e597295/graph-updates.php
+            // At the chatper Using Scripting
+            // using Pathfinding; //At top of script
+            // var guo = new GraphUpdateObject(myBounds);
+            // // Set some settings
+            // guo.updatePhysics = true;
+            // AstarPath.active.UpdateGraphs (guo);
+            // var guo = new GraphUpdateObject(GetComponent<Collider>().bounds); 
         }
     }
 }
