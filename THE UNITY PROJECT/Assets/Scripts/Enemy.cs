@@ -7,32 +7,42 @@ public class Enemy : MonoBehaviour
 {
 
     public Transform target;
-    public float speed = 200f;
-    public float nextWaypointDistance = 3f;
+
     Path path;
+    Seeker seeker;
+    Transform rb;
+    float movementSpeed = 1f;
+    float nextWaypointDistance = 3f;
     int currentWaypoint = 0;
     bool reachedEndOfPath = false;
 
-    Seeker seeker;
-    Rigidbody2D rb;
-
-    // Start is called before the first frame update
     void Start()
     {
+        // Assign the seeker after the game starts
         seeker = GetComponent<Seeker>();
-        rb = GetComponent<Rigidbody2D>();
 
+        // Start a seeker path every x repeats/seconds
         InvokeRepeating("UpdatePath", 0f, .5f);
     }
 
     void UpdatePath()
     {
-        if (seeker.IsDone())
-        seeker.StartPath(rb.position, target.position, OnPathComplete);
+        // Start a new path to the targetPosition, call the the OnPathComplete function
+        // when the path has been calculated (which may take a few frames depending on the complexity)
+        seeker.StartPath(transform.position, target.position, OnPathComplete);
+
+
+        //////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////
+        // https://arongranberg.com/astar/documentation/dev_4_1_6_17dee0ac/graph-updates.php
+        //////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////
+        
     }
 
     void OnPathComplete(Path p)
     {
+        // Assing the path and current waypoint valuues
         if (!p.error)
         {
             path = p;
@@ -43,9 +53,11 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        // We have no path to follow yet, so don't do anything
         if (path == null)
             return;
 
+        // CHeck if we have run past the path end
         if (currentWaypoint >= path.vectorPath.Count)
         {
             reachedEndOfPath = true;
@@ -55,19 +67,12 @@ public class Enemy : MonoBehaviour
             reachedEndOfPath = false;
         }
         
-        // Debug.Log("currentWaypoint: " + (Vector2)path.vectorPath[currentWaypoint]);
-        // Debug.Log("rb.position: " + rb.position);
-        Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
-        // Debug.Log("direction: " + direction);
-        Vector2 newPosition = (rb.position + direction) * speed * Time.deltaTime;
-        rb.position = newPosition;
-        rb.MovePosition(newPosition);
-        // Debug.Log("currentPosition: " + rb.position);
-        // Debug.Log("newPosition: " + newPosition);
-        // Debug.Log("--------");
+        // Move the enemy towards the end point
+        Vector2 currentPosition = new Vector2(transform.position.x, transform.position.y);
+        transform.position = Vector2.MoveTowards(currentPosition, path.vectorPath[currentWaypoint], movementSpeed * Time.deltaTime);
 
-        float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
-
+        // Calculate the distance to move over to the next way point
+        float distance = Vector2.Distance(transform.position, path.vectorPath[currentWaypoint]);
         if (distance < nextWaypointDistance)
         {
             currentWaypoint++;

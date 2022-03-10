@@ -36,6 +36,7 @@ public class GameState : MonoBehaviour
         if (Input.GetMouseButtonDown(0)) // Mouse left click
         {
             // Spawn the tower
+            mouseWorldPosition.z = 0f;
             GameObject tempObject = Instantiate(hoverTower, mouseWorldPosition, Quaternion.identity);
             
             // Make it's opcaity/alpha value solid
